@@ -1,0 +1,88 @@
+[Log] [Initialize] Asset start loading...
+[Warning] [Initialize] Asset database loading successfully
+[Log] [Initialize] Setting file loading successfully
+[Log] [Shader] Create new shader: 1
+[Log] [Shader] Shader vertex code enter: 
+#version 450 core 
+layout (location = 0) in vec4 aPosition; 
+layout (location = 1) in vec4 aColor; 
+layout (location = 2) in vec2 aTexcoord; 
+layout (location = 3) in vec3 aNormal; 
+layout (location = 4) in vec3 aTangent; 
+layout (location = 5) in vec3 aBitTangent; 
+out vec2 vTexcoord; 
+out vec3 vFragPos; 
+out vec3 vNormal; 
+out mat3 TBN; 
+layout (location = 20) uniform mat4 mvp; 
+layout (location = 21) uniform mat4 model; 
+layout (location = 22) uniform mat4 view; 
+layout (location = 23) uniform mat4 projection; 
+
+void main(void) 
+{ 
+   gl_Position = mvp * aPosition; 
+   vFragPos = vec3(model * aPosition); 
+   vTexcoord = aTexcoord; 
+   vNormal = normalize(aNormal); 
+   TBN[0] = (model * vec4(aTangent, 0.0)).xyz; 
+   TBN[1] = (model * vec4(aBitTangent, 0.0)).xyz; 
+   TBN[2] = (model * vec4(aNormal, 0.0)).xyz; 
+} 
+
+[Log] [Shader] Shader fragment code enter: 
+#version 450 core 
+layout (location = 50) uniform vec4 p_time; 
+uniform sampler2D Tex00; 
+uniform vec3 cameraPos; 
+in vec2 vTexcoord; 
+in vec3 vFragPos; 
+in vec3 vNormal; 
+in mat3 TBN; 
+out vec4 FragColor; 
+uniform vec3 l_ambient; 
+uniform float l_ambient_intensity; 
+struct DirLight{ 
+   vec3 l_direction_dir; 
+   vec3 l_direction_color; 
+   float l_direction_intensity; 
+}; 
+uniform DirLight dirLight[3]; 
+
+vec3 CalcDirLight(DirLight target) 
+{
+   float p = max(dot(normalize(target.l_direction_dir), vNormal* TBN), 0.0); 
+   return target.l_direction_color * p * target.l_direction_intensity; 
+}
+struct PointLight{ 
+   vec3 l_point_pos; 
+   vec3 l_point_color;
+   float l_point_intensity;
+   float l_point_linear;
+   float l_point_quadratic;
+}; 
+uniform PointLight pointLight[4]; 
+
+vec3 CalcPointLight(PointLight target) 
+{
+   vec3 viewDir = normalize(cameraPos - vFragPos); 
+   float distance = length(target.l_point_pos - vFragPos);
+   vec3 lightDir = normalize(target.l_point_pos - vFragPos);
+   vec3 reflectDir = reflect(-lightDir, vNormal);
+   float p = max(dot(viewDir, reflectDir), 0.0);
+   p = p * 1.0 / (target.l_point_intensity + target.l_point_linear * distance + (target.l_point_quadratic * distance * distance)));
+   return target.l_point_color; 
+}
+
+void main(void){ 
+   vec3 result = l_ambient * l_ambient_intensity;
+   for(int i = 0; i < 3; i++) {
+       result += CalcDirLight(dirLight[i]); 
+   }
+   FragColor = texture (Tex00, vTexcoord) * vec4(result, 1.0);
+}
+[Log] [Texture] Create new texture: 0
+[Log] [Texture] Loading texture from path: BuildIn/Test.png
+[Log] [Texture] Texture compile complete
+[Log] [Texture] 	Texture width: 360
+[Log] [Texture] 	Texture height: 360

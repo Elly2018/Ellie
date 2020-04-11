@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\GameExample\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\GameExample\packages\NUnit.3.12.0\build\NUnit.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89FF5B3B-79FC-472A-88AD-1D70CCE148FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GameLibrary</RootNamespace>
+    <AssemblyName>GameLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FbxSharp, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\GameExample\packages\FbxSharp.0.9\lib\net40\FbxSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="FileFormatWavefront, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\GameExample\packages\FileFormatWavefront.1.0.3.0\lib\net40\FileFormatWavefront.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageProcessor, Version=2.8.0.152, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\GameExample\packages\ImageProcessor.2.8.0\lib\net452\ImageProcessor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\GameExample\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\GameExample\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\GameExample\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actor\EActorBase.cs" />
+    <Compile Include="Actor\EPawn.cs" />
+    <Compile Include="Component\Camera\EFreeCamera.cs" />
+    <Compile Include="Component\Light\EDirectionLight.cs" />
+    <Compile Include="Component\Light\ELight.cs" />
+    <Compile Include="Component\Light\EPointLight.cs" />
+    <Compile Include="Component\Light\ESpotLight.cs" />
+    <Compile Include="Engine\ERenderPipeline.cs" />
+    <Compile Include="Shader\Basic\Ambient.cs" />
+    <Compile Include="Shader\Basic\AmbientWithTexture.cs" />
+    <Compile Include="Shader\Basic\Phong.cs" />
+    <Compile Include="Shader\Basic\Specular.cs" />
+    <Compile Include="Shader\ShaderFactory.cs" />
+    <Compile Include="Shader\Unlit\Texture.cs" />
+    <Compile Include="Structure\ELightSetting.cs" />
+    <Compile Include="Structure\ESkybox.cs" />
+    <Compile Include="Engine\ESceneManager.cs" />
+    <Compile Include="Engine\ETime.cs" />
+    <Compile Include="Shader\Unlit\ColorWithTexture.cs" />
+    <Compile Include="Shader\ShaderUtility.cs" />
+    <Compile Include="Structure\EMaterial.cs" />
+    <Compile Include="Structure\EPrimitiveMesh.cs" />
+    <Compile Include="Component\EActorComponent.cs" />
+    <Compile Include="Component\Camera\ECamera.cs" />
+    <Compile Include="Component\EMeshFilter.cs" />
+    <Compile Include="Actor\EActor.cs" />
+    <Compile Include="Component\EMeshRenderer.cs" />
+    <Compile Include="Engine\EAssetDatabase.cs" />
+    <Compile Include="Engine\EErrorReport.cs" />
+    <Compile Include="Engine\EInput.cs" />
+    <Compile Include="Engine\ELogger.cs" />
+    <Compile Include="Structure\EMesh.cs" />
+    <Compile Include="Structure\EScene.cs" />
+    <Compile Include="Structure\EShader.cs" />
+    <Compile Include="Engine\EWindow.cs" />
+    <Compile Include="Engine\EGameSetting.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Engine\EUtility.cs" />
+    <Compile Include="Shader\Unlit\Color.cs" />
+    <Compile Include="Shader\Basic\Diffuse.cs" />
+    <Compile Include="Structure\ETexture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\GameExample\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\GameExample\packages\NUnit.3.12.0\build\NUnit.props'))" />
+  </Target>
+</Project>
