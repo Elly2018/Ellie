@@ -17,6 +17,14 @@ namespace GameLibrary
             public LogType type;
             public string tag;
             public string message;
+
+            public LoggerMessage(LogType type, string tag, string message)
+            {
+                this.type = type;
+                this.tag = tag;
+                this.message = message;
+                Console.WriteLine("[" + type.ToString() + "]" + " " + "[" + tag + "]" + " " + message);
+            }
         }
 
         public static string LogFileName
@@ -40,37 +48,37 @@ namespace GameLibrary
         #region Create | Clean Message
         public static void Log(LogType type, string tag, string message)
         {
-            _message.Add(new LoggerMessage() { type = type, tag = tag, message = message });
+            _message.Add(new LoggerMessage(type, tag, message));
         }
 
         public static void Log(string tag, string message)
         {
-            _message.Add(new LoggerMessage() { type = LogType.Log, tag = tag, message = message });
+            _message.Add(new LoggerMessage(LogType.Log, tag, message));
         }
 
         public static void Log(string message)
         {
-            _message.Add(new LoggerMessage() { type = LogType.Log, tag = _unknownTag, message = message });
+            _message.Add(new LoggerMessage(LogType.Log, _unknownTag, message));
         }
 
         public static void LogWarning(string tag, string message)
         {
-            _message.Add(new LoggerMessage() { type = LogType.Warning, tag = tag, message = message });
+            _message.Add(new LoggerMessage(LogType.Warning, tag, message));
         }
 
         public static void LogWarning(string message)
         {
-            _message.Add(new LoggerMessage() { type = LogType.Warning, tag = _unknownTag, message = message });
+            _message.Add(new LoggerMessage(LogType.Warning, _unknownTag, message));
         }
 
         public static void LogError(string tag, string message)
         {
-            _message.Add(new LoggerMessage() { type = LogType.Error, tag = tag, message = message });
+            _message.Add(new LoggerMessage(LogType.Error, tag, message));
         }
 
         public static void LogError(string message)
         {
-            _message.Add(new LoggerMessage() { type = LogType.Error, tag = _unknownTag, message = message });
+            _message.Add(new LoggerMessage(LogType.Error, _unknownTag, message));
         }
 
         public static void CleanMessage()
@@ -167,5 +175,7 @@ namespace GameLibrary
         public const string Initialize = "Initialize";
         public const string Shader = "Shader";
         public const string Texture = "Texture";
+        public const string Material = "Material";
+        public const string Scene = "Scene";
     }
 }

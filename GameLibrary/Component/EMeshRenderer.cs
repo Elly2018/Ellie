@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using GameLibrary.Shader;
+using NUnit.Framework;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -9,10 +10,11 @@ namespace GameLibrary.Component
     [EComponentName("Mesh Renderer")]
     public class EMeshRenderer : EActorComponent
     {
-        private EMaterial _material;
+        private EMaterial _material = null;
 
         public EMeshRenderer()
         {
+
         }
 
         public void SetMaterial(EMaterial s)
@@ -58,26 +60,21 @@ namespace GameLibrary.Component
                 // Prefix
                 GL.Uniform3(GL.GetUniformLocation(_material.shader.program, "cameraPos"), ECamera.mainCamera.actor.position);
 
-                // Ambient light
-                GL.Uniform3(GL.GetUniformLocation(_material.shader.program, "l_ambient"), new Vector3(ELightSetting.Current.ambientColor.R, ELightSetting.Current.ambientColor.G, ELightSetting.Current.ambientColor.B));
-                GL.Uniform1(GL.GetUniformLocation(_material.shader.program, "l_ambient_intensity"), ELightSetting.Current.ambientIntensity);
-
                 // Direction Light
                 for (int i = 0; i < EDirectionLight.GetAllDirectionLight.Length; i++)
                 {
-                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"dirLight[{i}].l_direction_dir"), EDirectionLight.GetAllDirectionLight[i].actor.forward);
-                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"dirLight[{i}].l_direction_color"), new Vector3(EDirectionLight.GetAllDirectionLight[i].color.R, EDirectionLight.GetAllDirectionLight[i].color.G, EDirectionLight.GetAllDirectionLight[i].color.B));
-                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"dirLight[{i}].l_direction_intensity"), EDirectionLight.GetAllDirectionLight[i].intensity);
+                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"dirLight[{i}].direction"), EDirectionLight.GetAllDirectionLight[i].actor.forward);
+                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"dirLight[{i}].ambient"), new Vector3(EDirectionLight.GetAllDirectionLight[i].color.R, EDirectionLight.GetAllDirectionLight[i].color.G, EDirectionLight.GetAllDirectionLight[i].color.B));
                 }
 
                 // Point light
                 for (int i = 0; i < EPointLight.GetAllPointLight.Length; i++)
                 {
-                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].l_point_pos"), EPointLight.GetAllPointLight[i].actor.position);
-                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].l_point_color"), new Vector3(EPointLight.GetAllPointLight[i].color.R, EPointLight.GetAllPointLight[i].color.G, EPointLight.GetAllPointLight[i].color.B));
-                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].l_point_intensity"), EPointLight.GetAllPointLight[i].intensity);
-                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].l_point_linear"), EPointLight.GetAllPointLight[i].linear);
-                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].l_point_quadratic"), EPointLight.GetAllPointLight[i].quadratic);
+                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].position"), EPointLight.GetAllPointLight[i].actor.position);
+                    GL.Uniform3(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].color"), new Vector3(EPointLight.GetAllPointLight[i].color.R, EPointLight.GetAllPointLight[i].color.G, EPointLight.GetAllPointLight[i].color.B));
+                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].intensity"), EPointLight.GetAllPointLight[i].intensity);
+                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].minrange"), EPointLight.GetAllPointLight[i].minrange);
+                    GL.Uniform1(GL.GetUniformLocation(_material.shader.program, $"pointLight[{i}].maxrange"), EPointLight.GetAllPointLight[i].maxrange);
                 }
 
                 GL.DrawArrays(PrimitiveType.Triangles, 0, mesh.vertexStruct.Length);

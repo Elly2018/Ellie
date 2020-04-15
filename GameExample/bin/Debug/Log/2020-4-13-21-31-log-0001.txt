@@ -1,0 +1,15 @@
+[Log] [Shader] Create new shader: 1
+[Log] [Initialize] Asset start loading...
+[Warning] [Initialize] Asset database loading successfully
+[Log] [Initialize] Setting file loading successfully
+[Log] [Shader] Create new shader: 4
+[Warning] [Initialize] Default Scene
+[Warning] [Initialize] Application fixed update time: 0.004
+[Warning] [Initialize] Application FPS: 0.0166666666666667
+[Warning] [Initialize] Application start...
+[Log] [Texture] Create new texture: 0
+[Log] [Texture] Loading texture from path: BuildIn/Test.png
+[Log] [Texture] Texture compile complete
+[Log] [Texture] 	Texture width: 360
+[Log] [Texture] 	Texture height: 360
+[Log] [Shader] Create new shader: 7

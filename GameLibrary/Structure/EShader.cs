@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK.Graphics.ES30;
+using static GameLibrary.Shader.BuildInShader;
 
 namespace GameLibrary
 {
@@ -25,7 +26,6 @@ namespace GameLibrary
 
         public void SetVertexShader(string shader)
         {
-            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Shader, "Shader vertex code enter: \n\n" + shader + "\n");
             vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shader);
             GL.CompileShader(vertexShader);
@@ -41,7 +41,6 @@ namespace GameLibrary
 
         public void SetVertexFragment(string shader)
         {
-            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Shader, "Shader fragment code enter: \n\n" + shader + "\n");
             fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shader);
             GL.CompileShader(fragmentShader);
@@ -55,11 +54,13 @@ namespace GameLibrary
             GL.LinkProgram(_program);
         }
 
+        public void SetShader(ShaderBase sb)
+        {
+            SetShader(sb.Vertex(), sb.Fragment());
+        }
+
         public void SetShader(string vertex, string fragment)
         {
-            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Shader, "Shader vertex code enter: \n" + vertex);
-            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Shader, "Shader fragment code enter: \n" + fragment);
-
             vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, vertex);
             GL.CompileShader(vertexShader);

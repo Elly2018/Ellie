@@ -20,8 +20,14 @@ namespace GameLibrary
         const int SW_HIDE = 0;
         const int SW_SHOW = 5;
 
-        public EWindow(int width, int height) : base(width, height, new GraphicsMode(new ColorFormat(8, 8, 8, 8), 24, 8, 4), "Ellyality Demo")
-        {   
+        public static int GLWidth;
+        public static int GLHeight;
+
+        public EWindow(int width, int height) : base(width, height, new GraphicsMode(32, 0, 0, 4), "Ellyality Demo")
+        {
+            GLWidth = width;
+            GLHeight = height;
+
             // Initialize the engine
             EEngine.Initialize();
             VSync = VSyncMode.Off;
@@ -70,21 +76,23 @@ namespace GameLibrary
             if(EEngine.instance.setting.FirstLoadingScene == null || EEngine.instance.setting.FirstLoadingScene == "")
             {
                 EEngine.instance.loadScene.Add(EScene.GetDefaultScene());
-                Console.WriteLine("Default Scene");
+                ELogger.Log(ELogger.LogType.Warning, ELoggerTag.Initialize, "Default scene setting is null ! loading default scene instead...");
             }
 
             // Hide console window
             var handle = GetConsoleWindow();
             ShowWindow(handle, EEngine.instance.setting.DebugMode ? SW_SHOW : SW_HIDE);
 
+            ELogger.Log(ELogger.LogType.Warning, ELoggerTag.Initialize, "Application fixed update rate: " + EEngine.instance.setting.FixedUpdateTime.ToString());
+            ELogger.Log(ELogger.LogType.Warning, ELoggerTag.Initialize, "Application frame fresh rate: " + (double)1 / (double)EEngine.instance.setting.FramePreSecond);
             Run(EEngine.instance.setting.FixedUpdateTime, (double)1 / (double)EEngine.instance.setting.FramePreSecond);
         }
 
-        public abstract void ApplicationStart(EventArgs e);
+        public abstract void ApplicationStart();
         protected override void OnLoad(EventArgs e)
         {
-            GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            ApplicationStart(e);
+            ELogger.Log(ELogger.LogType.Warning, ELoggerTag.Initialize, "Application start...");
+            ApplicationStart();
             base.OnLoad(e);
         }
 
@@ -105,26 +113,6 @@ namespace GameLibrary
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             this.Title = $"{"Ellyality Demo"}: (Vsync: {VSync}) FPS: {1f / e.Time:0}";
-            
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            GL.ClearColor(new Color4(0.05f, 0.05f, 0.05f, 1));
-
-            GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
-            GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
-            GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Blend);
-            //GL.Enable(EnableCap.CullFace);
-            GL.Enable(EnableCap.Texture1D);
-            GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.TextureCubeMap);
-            GL.Enable(EnableCap.LineSmooth);
-            GL.Enable(EnableCap.PolygonSmooth);
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.Enable(EnableCap.Multisample);
-
-            GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Back);
-
             EEngine.instance.OnRender();
 
             // Driven class render function
@@ -194,87 +182,5 @@ namespace GameLibrary
             base.OnResize(e);
         }
     }
-
-    public sealed class EEngine
-    {
-        public const string BuildIn = "BuildIn/";
-
-        private static EEngine _instance;
-        public static EEngine instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
-
-        public static void Initialize()
-        {
-            if(_instance == null)
-            {
-                _instance = new EEngine();
-                _instance.loadScene = new List<EScene>();
-                EInput.Initialize();
-            }
-        }
-
-        public EAssetDatabase assetDatabase;
-        public EGameSetting setting;
-        public List<EScene> loadScene;
-
-        private double passtime_fix = 0.0;
-
-        public void OnUpdate() 
-        {
-            passtime_fix += ETime.DeltaTime;
-
-            // Call update
-            for(int i = 0; i < loadScene.Count; i++)
-            {
-                if(loadScene[i] != null)
-                {
-                    for(int j = 0; j < loadScene[i].childLength; j++)
-                    {
-                        loadScene[i].GetChild(j).OnUpdate();
-                    }
-                }
-            }
-        }
-        public void OnFixedUpdate() 
-        {
-            if (passtime_fix > setting.FixedUpdateTime)
-            {
-                passtime_fix = 0;
-
-                // Call fixedupdate
-                for (int i = 0; i < loadScene.Count; i++)
-                {
-                    if (loadScene[i] != null)
-                    {
-                        for (int j = 0; j < loadScene[i].childLength; j++)
-                        {
-                            loadScene[i].GetChild(j).OnFixedUpdate();
-                        }
-                    }
-                }
-            }
-        }
-        public void OnRender() 
-        {
-            // Call drawing
-            for (int i = 0; i < loadScene.Count; i++)
-            {
-                ELightSetting.Current = loadScene[i].lightSetting;
-                EScene.Current = loadScene[i];
-
-                if (loadScene[i] != null)
-                {
-                    for (int j = 0; j < loadScene[i].childLength; j++)
-                    {
-                        loadScene[i].GetChild(j).OnRender();
-                    }
-                }
-            }
-        }
-    }
 }
+

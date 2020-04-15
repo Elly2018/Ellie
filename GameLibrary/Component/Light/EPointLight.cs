@@ -28,8 +28,8 @@ namespace GameLibrary.Component
         }
 
         public Color4 color = Color4.White;
-        public float linear = 0.09f;
-        public float quadratic = 0.032f;
+        public float maxrange = 8.0f;
+        public float minrange = 0.7f;
 
         public override void OnUpdate()
         {

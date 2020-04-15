@@ -81,6 +81,7 @@ namespace GameLibrary
 
         public EActor(string name) : base(name)
         {
+            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Scene, "Adding actor to scene: " + name);
             components = new List<EActorComponent>();
             OnLoad();
         }
@@ -125,7 +126,6 @@ namespace GameLibrary
         {
             T buffer = new T();
             components.Add(buffer);
-            Console.WriteLine(buffer.GetType().Name);
             MethodInfo MI = buffer.GetType().GetMethod("SetActor");
             MI.Invoke(buffer, new object[] { this });
             return buffer;

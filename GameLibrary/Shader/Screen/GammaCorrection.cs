@@ -5,29 +5,27 @@ namespace GameLibrary.Shader
 {
     public partial class BuildInShader
     {
-        public sealed class Texture : ShaderBase
+        public sealed class GammaCorrection : ShaderBase
         {
             public override string Fragment()
             {
                 return
                     VersionInFunc() +
                     VertexInStruct() +
+                    FXAA() +
                     @"
 out vec4 FragColor;
-uniform vec3 Color;
-uniform int TextureVaild = 0;
-layout (binding=0) uniform sampler2D Surface;
+layout(binding=0) uniform sampler2D Screen;
+uniform vec2 ScreenSize;
+uniform int ScreenVaild;
 
 void main(void)
 {
-    if(TextureVaild == 1)
-    {
-        FragColor = texture(Surface, vin.vTexcoord);
-    }
-    else
-    {
-        FragColor = vec4(Color, 1.0);
-    }
+    vec4 color = vec4(1.0);
+    color.rgb = FXAA(Screen, vin.vTexcoord, vec2(1.0 / ScreenSize.x, 1.0 / ScreenSize.y));
+    //color = texture(Screen, vin.vTexcoord);
+    color.rgb = pow(color.rgb, vec3(1.0/2.2));
+    FragColor = color;
 }
 ";
             }
@@ -39,10 +37,10 @@ void main(void)
                     MeshInFunc() +
                     VertexOutStruct() +
                     @"
-
-void main(void) 
-{ 
-    gl_Position = mvp * aPosition; 
+out vec4 vs_color;
+void main(void)
+{
+    gl_Position = mvp * aPosition;
     vout.vTexcoord = aTexcoord; 
 }
 ";
@@ -50,12 +48,11 @@ void main(void)
         }
     }
 
-    public class ETextureMat : EMaterial
+    public class EGammaCorrectionMat : EMaterial
     {
-        public ETextureMat() : base(ShaderFactory.Build(BuildinShader.Texture))
+        public EGammaCorrectionMat() : base(ShaderFactory.Build(BuildinShader.GammaCorrection))
         {
-            vec3Input.Add(new Tuple<Vector3, string>(new Vector3(0.8f), "Color"));
-            textureInput.Add(new Tuple<ETexture, int, string>(null, 0, "TextureVaild"));
+
         }
     }
 }

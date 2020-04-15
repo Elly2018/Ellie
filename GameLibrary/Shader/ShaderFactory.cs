@@ -3,13 +3,14 @@
     public enum BuildinShader
     {
         Color,
-        ColorWithTexture,
+        ErrorColor,
+        TintTexture,
         Texture,
-        Ambinet,
-        AmbinetWithTexture,
-        Diffuse,
+        Lambert,
         Specular,
-        Phong
+        Phong,
+        Screen,
+        GammaCorrection
     }
 
     public class ShaderFactory
@@ -23,127 +24,59 @@
                 case BuildinShader.Color:
                     {
                         result = new EShader();
-                        result.SetShader(
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForVertex.PrefixInput +
-                            BuildInShader.ForVertex.MVP +
-                            BuildInShader.ColorVertex,
-
-                            BuildInShader.General.Prefix +
-                            BuildInShader.General.Time +
-                            BuildInShader.ForFragment.FragColor +
-                            BuildInShader.ColorFragment);
+                        result.SetShader(new BuildInShader.Color());
                         break;
                     }
 
-                case BuildinShader.ColorWithTexture:
+                case BuildinShader.ErrorColor:
                     {
                         result = new EShader();
-                        result.SetShader(
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForVertex.PrefixInput +
-                            BuildInShader.ForVertex.outTextureCoord +
-                            BuildInShader.ForVertex.MVP +
-                            BuildInShader.ColorWithTextureVertex,
-
-                            BuildInShader.General.Prefix +
-                            BuildInShader.General.Time +
-                            BuildInShader.General.Tex00 +
-                            BuildInShader.ForFragment.VTexturecoord +
-                            BuildInShader.ForFragment.FragColor +
-                            BuildInShader.ColorWithTextureFragment);
+                        result.SetShader(new BuildInShader.ErrorColor());
                         break;
                     }
-                    
+
+                case BuildinShader.TintTexture:
+                    {
+                        result = new EShader();
+                        result.SetShader(new BuildInShader.TintTexture());
+                        break;
+                    }
+
                 case BuildinShader.Texture:
                     {
                         result = new EShader();
-                        result.SetShader(
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForVertex.PrefixInput +
-                            BuildInShader.ForVertex.outTextureCoord +
-                            BuildInShader.ForVertex.MVP +
-                            BuildInShader.TextureVertex,
-
-                            BuildInShader.General.Prefix +
-                            BuildInShader.General.Time +
-                            BuildInShader.General.Tex00 +
-                            BuildInShader.ForFragment.VTexturecoord +
-                            BuildInShader.ForFragment.FragColor +
-                            BuildInShader.TextureFragment);
-                        break;
-                    }
-                    
-                case BuildinShader.Ambinet:
-                    {
-                        result = new EShader();
-                        result.SetShader(
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForVertex.PrefixInput +
-                            BuildInShader.ForVertex.MVP +
-                            BuildInShader.AmbientVertex,
-
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForLight.l_ambient +
-                            BuildInShader.General.Time +
-                            BuildInShader.ForFragment.FragColor +
-                            BuildInShader.AmbientFragment);
+                        result.SetShader(new BuildInShader.Texture());
                         break;
                     }
 
-                case BuildinShader.AmbinetWithTexture:
+                case BuildinShader.Lambert:
                     {
                         result = new EShader();
-                        result.SetShader(
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForVertex.PrefixInput +
-                            BuildInShader.ForVertex.outTextureCoord +
-                            BuildInShader.ForVertex.MVP +
-                            BuildInShader.AmbientWithTextureVertex,
-
-                            BuildInShader.General.Prefix +
-                            BuildInShader.General.Tex00 +
-                            BuildInShader.ForFragment.VTexturecoord +
-                            BuildInShader.ForLight.l_ambient +
-                            BuildInShader.General.Time +
-                            BuildInShader.ForFragment.FragColor +
-                            BuildInShader.AmbientWithTextureFragment);
-                        break;
-                    }
-
-                case BuildinShader.Diffuse:
-                    {
-                        result = new EShader();
-                        result.SetShader(
-                            BuildInShader.General.Prefix +
-                            BuildInShader.ForVertex.PrefixInput +
-                            BuildInShader.ForVertex.outTextureCoord +
-                            BuildInShader.ForVertex.outFragPosition +
-                            BuildInShader.ForVertex.outNormal +
-                            BuildInShader.ForVertex.outTBN +
-                            BuildInShader.ForVertex.MVP +
-                            BuildInShader.DiffuseVertex,
-
-                            BuildInShader.General.Prefix +
-                            BuildInShader.General.Time +
-                            BuildInShader.General.Tex00 +
-                            BuildInShader.General.CameraPos +
-                            BuildInShader.ForFragment.VTexturecoord +
-                            BuildInShader.ForFragment.VFragPosition +
-                            BuildInShader.ForFragment.VNormal +
-                            BuildInShader.ForFragment.VTBN +
-                            BuildInShader.ForFragment.FragColor +
-                            BuildInShader.ForLight.l_ambient +
-                            BuildInShader.ForLight.l_direction +
-                            BuildInShader.ForLight.l_point +
-                            BuildInShader.DiffuseFragment);
+                        result.SetShader(new BuildInShader.Lambert());
                         break;
                     }
 
                 case BuildinShader.Specular:
-                    break;
+                    {
+                        break;
+                    }
                 case BuildinShader.Phong:
-                    break;
+                    {
+                        break;
+                    }
+                case BuildinShader.Screen:
+                    {
+                        result = new EShader();
+                        result.SetShader(new BuildInShader.Texture());
+                        break;
+                    }
+
+                case BuildinShader.GammaCorrection:
+                    {
+                        result = new EShader();
+                        result.SetShader(new BuildInShader.GammaCorrection());
+                        break;
+                    }
             }
 
             return result;

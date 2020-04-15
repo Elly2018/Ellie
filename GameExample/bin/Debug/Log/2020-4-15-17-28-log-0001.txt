@@ -1,0 +1,26 @@
+[Log] [Shader] Create new shader: 1
+[Log] [Material] Adding material: EGammaCorrectionMat
+[Log] [Initialize] Asset start loading...
+[Warning] [Initialize] Asset database loading successfully
+[Log] [Initialize] Setting file loading successfully
+[Log] [Shader] Create new shader: 4
+[Log] [Material] Adding material: EColorMat
+[Log] [Scene] Adding actor to scene: floor
+[Warning] [Initialize] Default scene setting is null ! loading default scene instead...
+[Warning] [Initialize] Application fixed update rate: 0.004
+[Warning] [Initialize] Application frame fresh rate: 0.0166666666666667
+[Warning] [Initialize] Application start...
+[Log] [Texture] Create new texture: 0
+[Log] [Texture] Loading texture from path: BuildIn/Test.png
+[Log] [Texture] Texture compile complete
+[Log] [Texture] 	Texture width: 360
+[Log] [Texture] 	Texture height: 360
+[Log] [Shader] Create new shader: 7
+[Log] [Material] Adding material: ELambertMat
+[Log] [Scene] Adding actor to scene: cam
+[Log] [Scene] Adding actor to scene: Obj 01
+[Log] [Scene] Adding actor to scene: Obj 02
+[Log] [Scene] Adding actor to scene: Obj 04
+[Log] [Scene] Adding actor to scene: Dir light
+[Log] [Scene] Adding actor to scene: Point light
+[Log] [Scene] Adding actor to scene: Point light

@@ -5,19 +5,19 @@ namespace GameLibrary.Shader
 {
     public partial class BuildInShader
     {
-        public sealed class Color : ShaderBase
+        public sealed class ErrorColor : ShaderBase
         {
             public override string Fragment()
             {
-                return
+                return 
                     VersionInFunc() +
                     @"
+in vec4 vs_color;
 out vec4 FragColor;
-uniform vec3 Color;
 
 void main(void)
 {
-    FragColor = vec4(Color, 1.0);
+    FragColor = vs_color;
 }
 ";
             }
@@ -28,20 +28,21 @@ void main(void)
                     VersionInFunc() +
                     MeshInFunc() +
                     @"
+out vec4 vs_color;
 void main(void)
 {
     gl_Position = mvp * aPosition;
+    vs_color = aColor;
 }
 ";
             }
         }
     }
 
-    public class EColorMat : EMaterial
+    public class EErrorColorMat : EMaterial
     {
-        public EColorMat() : base(ShaderFactory.Build(BuildinShader.Color))
+        public EErrorColorMat() : base(ShaderFactory.Build(BuildinShader.ErrorColor))
         {
-            vec3Input.Add(new Tuple<Vector3, string>(new Vector3(0.8f, 0.8f, 0.8f), "Color"));
         }
     }
 }

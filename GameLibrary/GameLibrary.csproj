@@ -77,18 +77,19 @@
     <Compile Include="Component\Light\ELight.cs" />
     <Compile Include="Component\Light\EPointLight.cs" />
     <Compile Include="Component\Light\ESpotLight.cs" />
+    <Compile Include="Engine\EEngine.cs" />
     <Compile Include="Engine\ERenderPipeline.cs" />
-    <Compile Include="Shader\Basic\Ambient.cs" />
-    <Compile Include="Shader\Basic\AmbientWithTexture.cs" />
     <Compile Include="Shader\Basic\Phong.cs" />
     <Compile Include="Shader\Basic\Specular.cs" />
+    <Compile Include="Shader\Screen\GammaCorrection.cs" />
     <Compile Include="Shader\ShaderFactory.cs" />
+    <Compile Include="Shader\Unlit\Color.cs" />
     <Compile Include="Shader\Unlit\Texture.cs" />
     <Compile Include="Structure\ELightSetting.cs" />
     <Compile Include="Structure\ESkybox.cs" />
     <Compile Include="Engine\ESceneManager.cs" />
     <Compile Include="Engine\ETime.cs" />
-    <Compile Include="Shader\Unlit\ColorWithTexture.cs" />
+    <Compile Include="Shader\Unlit\TintTexture.cs" />
     <Compile Include="Shader\ShaderUtility.cs" />
     <Compile Include="Structure\EMaterial.cs" />
     <Compile Include="Structure\EPrimitiveMesh.cs" />
@@ -108,8 +109,8 @@
     <Compile Include="Engine\EGameSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Engine\EUtility.cs" />
-    <Compile Include="Shader\Unlit\Color.cs" />
-    <Compile Include="Shader\Basic\Diffuse.cs" />
+    <Compile Include="Shader\Unlit\ErrorColor.cs" />
+    <Compile Include="Shader\Basic\Lambert.cs" />
     <Compile Include="Structure\ETexture.cs" />
   </ItemGroup>
   <ItemGroup>

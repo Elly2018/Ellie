@@ -18,7 +18,14 @@ namespace GameLibrary
         }
 
         private Bitmap bitmap;
-        private int textureID;
+        private int _textureID;
+        public int textureID
+        {
+            get
+            {
+                return _textureID;
+            }
+        }
 
         private int _minMipmapLevel = 0;
         private int _maxMipmapLevel = 8;
@@ -26,7 +33,8 @@ namespace GameLibrary
         public ETexture(string name)
         {
             _textureName = name;
-            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Texture, "Create new texture: " + textureID.ToString());
+            ELogger.Log(ELogger.LogType.Log, ELoggerTag.Texture, "Create new texture: " + _textureID.ToString());
+            GL.CreateTextures(TextureTarget.Texture2D, 1, out _textureID);
         }
 
         public void Load(string path)
@@ -46,19 +54,18 @@ namespace GameLibrary
         public void Compile()
         {
             float[] data = LoadTexture(bitmap);
-            GL.CreateTextures(TextureTarget.Texture2D, 1, out textureID);
-            GL.BindTexture(TextureTarget.Texture2D, textureID);
+            GL.BindTexture(TextureTarget.Texture2D, _textureID);
 
-            GL.TextureStorage2D(textureID, _maxMipmapLevel, SizedInternalFormat.Rgba32f, bitmap.Width, bitmap.Height);
-            GL.TextureSubImage2D(textureID, 0, 0, 0, bitmap.Width, bitmap.Height, OpenTK.Graphics.OpenGL4.PixelFormat.Rgba, PixelType.Float, data);
+            GL.TextureStorage2D(_textureID, _maxMipmapLevel, SizedInternalFormat.Rgba32f, bitmap.Width, bitmap.Height);
+            GL.TextureSubImage2D(_textureID, 0, 0, 0, bitmap.Width, bitmap.Height, OpenTK.Graphics.OpenGL4.PixelFormat.Rgba, PixelType.Float, data);
             
-            GL.GenerateTextureMipmap(textureID);
-            GL.TextureParameterI(textureID, TextureParameterName.TextureBaseLevel, ref _minMipmapLevel);
-            GL.TextureParameterI(textureID, TextureParameterName.TextureMaxLevel, ref _maxMipmapLevel);
+            GL.GenerateTextureMipmap(_textureID);
+            GL.TextureParameterI(_textureID, TextureParameterName.TextureBaseLevel, ref _minMipmapLevel);
+            GL.TextureParameterI(_textureID, TextureParameterName.TextureMaxLevel, ref _maxMipmapLevel);
             var textureMinFilter = (int)TextureMinFilter.LinearMipmapLinear;
-            GL.TextureParameterI(textureID, TextureParameterName.TextureMinFilter, ref textureMinFilter);
+            GL.TextureParameterI(_textureID, TextureParameterName.TextureMinFilter, ref textureMinFilter);
             var textureMagFilter = (int)TextureMinFilter.Linear;
-            GL.TextureParameterI(textureID, TextureParameterName.TextureMagFilter, ref textureMagFilter);
+            GL.TextureParameterI(_textureID, TextureParameterName.TextureMagFilter, ref textureMagFilter);
             // data not needed from here on, OpenGL has the data
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
@@ -71,12 +78,12 @@ namespace GameLibrary
 
         public void Bind()
         {
-            GL.BindTexture(TextureTarget.Texture2D, textureID);
+            GL.BindTexture(TextureTarget.Texture2D, _textureID);
         }
 
         public void Dispose()
         {
-            GL.DeleteTexture(textureID);
+            GL.DeleteTexture(_textureID);
         }
 
         private float[] LoadTexture(Bitmap map)
